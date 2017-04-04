@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://cnsue.github.io/img/carthage-2.png">
 <meta property="og:image" content="https://cnsue.github.io/img/carthage-3.png">
 <meta property="og:image" content="https://cnsue.github.io/img/carthage-4.png">
-<meta property="og:updated_time" content="2017-04-04T02:16:20.000Z">
+<meta property="og:updated_time" content="2017-04-04T13:58:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="轻量包管理工具Carthage">
 <meta name="twitter:description" content="我们熟知的管理工具有cocoaPods，cocoaPods 是一整套的 包管理方案，在podfile中配置好我们需要的第三方库，然后cocoapods会进行下载，集成，然后修改我们项目的workspace文件，这一系列操作，
@@ -323,6 +323,7 @@
 <p> 相比之下，carthage非常轻量，它会有一个cartfile描述文件，但是Carthage不会对项目结构进行更改，他的使用只是根据我们的描述文件，对配置的第三方库进行下载，并且使用xcodebuild命令构建成frameWork文件，然后由我们自己将这些库集成到项目中，carthage使用的是一种非侵入性的哲学。</p>
 <p>但是这样一来，carthage就没有cocoaPods的集成操作能力了，开发者必须在carthage下载并构建完第三方库后，手动的关联到项目中， 另外，carthage除了非侵入式，他还是去中心化的，它的包管理不像cocoapods那样，有一个中心的服务器来管理各个包的元信息，(cocoapods中的包，如果我们想要上传自己写的库，还需要配置相应的podspec文件，并且用pod命令push上去由cocoapods团队进行审核)。不会受中心服务器信息量和稳定性的限制，弊端的话，就是我们想查找第三方库的时候，也没有一个中心服务器来帮助我们索引，必须自行从网络进行查找。</p>
 <p>如何使用：首先，我们需要安装Carthage环境，可以从它的github主页上找到下载地址：<a href="https://github.com/Carthage/Carthage/releases" target="_blank" rel="external">https://github.com/Carthage/Carthage/releases</a><br>下载pkg文件，安装，终端下进入项目根目录。</p>
+<a id="more"></a>
 <p>Samples是为了测试Carthage而新建的一个项目 </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> Samples//</div></pre></td></tr></table></figure>
 <p>创建Cartfile文件</p>
@@ -388,6 +389,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/04/03/iOS内存泄漏自动检测/" rel="prev" title="iOS内存泄漏自动检测">
+                iOS内存泄漏自动检测 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -449,7 +454,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -462,7 +467,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>

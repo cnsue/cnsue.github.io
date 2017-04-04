@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="iOS," />
 
 
 
@@ -87,15 +87,21 @@
 
 
 
-<meta name="description" content="Coding 改变生活">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Cnsue的博客">
-<meta property="og:url" content="https://cnsue.github.io/index.html">
+<meta name="description" content="背景内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS内存泄漏自动检测">
+<meta property="og:url" content="https://cnsue.github.io/2017/04/03/iOS内存泄漏自动检测/index.html">
 <meta property="og:site_name" content="Cnsue的博客">
-<meta property="og:description" content="Coding 改变生活">
+<meta property="og:description" content="背景内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说">
+<meta property="og:image" content="https://cnsue.github.io/img/leak0.png">
+<meta property="og:image" content="https://cnsue.github.io/img/leak1.png">
+<meta property="og:image" content="https://cnsue.github.io/img/leak2.png">
+<meta property="og:image" content="https://cnsue.github.io/img/leak3.png">
+<meta property="og:updated_time" content="2017-04-04T13:53:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cnsue的博客">
-<meta name="twitter:description" content="Coding 改变生活">
+<meta name="twitter:title" content="iOS内存泄漏自动检测">
+<meta name="twitter:description" content="背景内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说">
+<meta name="twitter:image" content="https://cnsue.github.io/img/leak0.png">
 
 
 
@@ -123,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://cnsue.github.io/"/>
+  <link rel="canonical" href="https://cnsue.github.io/2017/04/03/iOS内存泄漏自动检测/"/>
 
 
 
 
 
-  <title> Cnsue的博客 </title>
+  <title> iOS内存泄漏自动检测 | Cnsue的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -154,9 +160,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-   page-home 
- ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -229,9 +233,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -261,10 +265,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2017/04/03/iOS内存泄漏自动检测/" itemprop="url">
-                  iOS内存泄漏自动检测
-                </a>
+                iOS内存泄漏自动检测
               
             
           </h1>
@@ -315,9 +316,7 @@
       
 
       
-        
-          
-            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说比较缓慢，而且要进行定位的需要进行反复的测试点击。我们先来看一下这些工具的使用以及相对应来说的问题。</p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说比较缓慢，而且要进行定位的需要进行反复的测试点击。我们先来看一下这些工具的使用以及相对应来说的问题。</p>
 <h4 id="Leaks"><a href="#Leaks" class="headerlink" title="Leaks"></a>Leaks</h4><p>苹果的开发文档中介绍，一个app的内存分三类：</p>
 <ul>
 <li><p><strong>Leaked memory</strong>: Memory unreferenced by your application that cannot be used again or freed (also detectable by using the Leaks instrument).</p>
@@ -349,296 +348,72 @@
 <p>通知移除需要一个时机，这里我们使用Associated Object机制给每一个子对象再生成一个Proxy对象，在Proxy对象的dealloc里面移除通知。</p>
 <p>当然什么时候去判断一个对象的生命周期开始，什么时候判断为结束，需要一个精挑细选的机制。View、Controller、Property各不相同。PLeakSniffer采取保守的策略，通过Objective C的runtime机制，递归的将一个Controller所有强引用的property找出，并安装proxy监听Ping通知。</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://cnsue.github.io/2017/03/28/轻量包管理工具Carthage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cnsue">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cnsue的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/03/28/轻量包管理工具Carthage/" itemprop="url">
-                  轻量包管理工具Carthage
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-28T10:34:40+08:00">
-                2017-03-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
         
-          <p>我们熟知的管理工具有cocoaPods，cocoaPods 是一整套的 包管理方案，在podfile中配置好我们需要的第三方库，然后cocoapods会进行下载，集成，然后修改我们项目的workspace文件，这一系列操作，</p>
-<p> 相比之下，carthage非常轻量，它会有一个cartfile描述文件，但是Carthage不会对项目结构进行更改，他的使用只是根据我们的描述文件，对配置的第三方库进行下载，并且使用xcodebuild命令构建成frameWork文件，然后由我们自己将这些库集成到项目中，carthage使用的是一种非侵入性的哲学。</p>
-<p>但是这样一来，carthage就没有cocoaPods的集成操作能力了，开发者必须在carthage下载并构建完第三方库后，手动的关联到项目中， 另外，carthage除了非侵入式，他还是去中心化的，它的包管理不像cocoapods那样，有一个中心的服务器来管理各个包的元信息，(cocoapods中的包，如果我们想要上传自己写的库，还需要配置相应的podspec文件，并且用pod命令push上去由cocoapods团队进行审核)。不会受中心服务器信息量和稳定性的限制，弊端的话，就是我们想查找第三方库的时候，也没有一个中心服务器来帮助我们索引，必须自行从网络进行查找。</p>
-<p>如何使用：首先，我们需要安装Carthage环境，可以从它的github主页上找到下载地址：<a href="https://github.com/Carthage/Carthage/releases">https://github.com/Carthage/Carthage/releases</a><br>下载pkg文件，安装，终端下进入项目根目录。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/03/28/轻量包管理工具Carthage/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/28/轻量包管理工具Carthage/" rel="next" title="轻量包管理工具Carthage">
+                <i class="fa fa-chevron-left"></i> 轻量包管理工具Carthage
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
 
-    <div>
-      
-    </div>
+          <span class="post-nav-divider"></span>
 
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://cnsue.github.io/2017/03/27/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="cnsue">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cnsue的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+          <div class="post-nav-prev post-nav-item">
             
-            
-              
-                
-                <a class="post-title-link" href="/2017/03/27/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-27T17:48:57+08:00">
-                2017-03-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/03/27/hello-world/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -646,6 +421,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -665,8 +444,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -719,6 +507,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Leaks"><span class="nav-number">1.0.1.</span> <span class="nav-text">Leaks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Allocations"><span class="nav-number">1.0.2.</span> <span class="nav-text">Allocations</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Debug-Memory-Graph"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">Debug Memory Graph</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开源库"><span class="nav-number">1.0.3.</span> <span class="nav-text">开源库</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HeapInspector-for-iOS"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">HeapInspector-for-iOS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MSLeakHunter"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">MSLeakHunter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MLeaksFinder"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">MLeaksFinder</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PLeakSniffer"><span class="nav-number">1.0.3.4.</span> <span class="nav-text">PLeakSniffer</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -833,6 +637,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
