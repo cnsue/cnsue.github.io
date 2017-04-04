@@ -263,7 +263,7 @@
               
                 
                 <a class="post-title-link" href="/2017/04/03/iOS内存泄漏自动检测/" itemprop="url">
-                  iOS内存泄漏自动检测
+                  iOS内存泄漏自动检测盘点
                 </a>
               
             
@@ -317,7 +317,7 @@
       
         
           
-            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说比较缓慢，而且要进行定位的需要进行反复的测试点击。我们先来看一下这些工具的使用以及相对应来说的问题。</p>
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说比较缓慢，而且要进行定位的需要进行反复的测试点击。因此催生出了很多的第三方开源库来帮助我们实现在debug过程中实时提示内存泄漏，从而提高我们的开发效率，节省时间成本。当然，我们还是先来看一下这些Xcode提供的工具的使用以及相对应的问题。</p>
 <h4 id="Leaks"><a href="#Leaks" class="headerlink" title="Leaks"></a>Leaks</h4><p>苹果的开发文档中介绍，一个app的内存分三类：</p>
 <ul>
 <li><p><strong>Leaked memory</strong>: Memory unreferenced by your application that cannot be used again or freed (also detectable by using the Leaks instrument).</p>
@@ -348,6 +348,8 @@
 <p>小技巧：子对象(比如view)建立一个对controller 的weak引用，如果Controller被释放，这个weak引用也随之置为nil。那么怎么知道子对象没有被释放呢？用一个单例独享每隔一小段时间发出一个ping通知去ping这个子对象，如果子对象还活着就会回一个pong通知。如果子对象的controller已不存在，但还能响应这个ping通知，那么这个对象就是可疑的泄漏对象。完整结构如下图所示：<img src="/img/leak3.png" alt=""></p>
 <p>通知移除需要一个时机，这里我们使用Associated Object机制给每一个子对象再生成一个Proxy对象，在Proxy对象的dealloc里面移除通知。</p>
 <p>当然什么时候去判断一个对象的生命周期开始，什么时候判断为结束，需要一个精挑细选的机制。View、Controller、Property各不相同。PLeakSniffer采取保守的策略，通过Objective C的runtime机制，递归的将一个Controller所有强引用的property找出，并安装proxy监听Ping通知。</p>
+<p>TODO：FBMemoryProfiler</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>开源库大大方便了我们在开发过程中实时发现内存泄漏。但是毕竟或多或少会有一些不足，因此我的建议是开发过程中可以使用开源库来进行内存泄漏的排查，而Instruments工具等适合集中进行内存泄漏排查的工作。两者相互配合为好。</p>
 
           
         
