@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://cnsue.github.io/img/leak1.png">
 <meta property="og:image" content="https://cnsue.github.io/img/leak2.png">
 <meta property="og:image" content="https://cnsue.github.io/img/leak3.png">
-<meta property="og:updated_time" content="2017-04-04T14:07:37.000Z">
+<meta property="og:updated_time" content="2017-04-04T14:23:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS内存泄漏自动检测盘点">
 <meta name="twitter:description" content="背景内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说">
@@ -333,7 +333,7 @@
 </blockquote>
 <p>push前和pop后，app的内存占用大小应该是相同的。在push过程中新分配的内存，在pop后应该被dealloc掉。除了前几次push可能有预热数据和cache数据的情况，如果在多次push和pop之后，内存还是不断增长，则表示存在内存泄漏。因此，我们每回push之前和pop之后都Mark Generation 一下，以此观察内存是不是无限制的增长。</p>
 <h5 id="Debug-Memory-Graph"><a href="#Debug-Memory-Graph" class="headerlink" title="Debug Memory Graph"></a>Debug Memory Graph</h5><p>Debug Memory Graph 是Xcode8中增加的调试技能，在App运行调试过程中，点击即可实时看到内存的分配情况以及引用情况，可用于发现部分循环引用问题，如果项目过大的话，生成速度较慢。<br>如图可通过配置<code>Malloc Scribble</code>使结果更加精确，配置<code>Malloc Stack</code>可以看到对象的<code>malloc_history</code><br><img src="/img/leak0.png" alt=""><br>生成后画面如图所示：<br><img src="/img/leak1.png" alt=""></p>
-<h4 id="开源库"><a href="#开源库" class="headerlink" title="开源库"></a>开源库</h4><p>由于Xcode提供的工具虽然可以解决一定的问题，但是对于要求效率的开发人员来说，每一次的定位都需要专门做一次上述操作，Memory Graph虽然可以比较直观，但对于大型项目来说，容易卡死。因此github中也存在一些可以实时检测内存并给出一定泄漏提醒的开源库。以下来分别来看：</p>
+<h4 id="开源库"><a href="#开源库" class="headerlink" title="开源库"></a>开源库</h4><p>由于Xcode提供的工具虽然可以解决一定的问题，但是对于要求效率的开发人员来说，每一次的定位都需要专门做一次上述操作，Memory Graph虽然可以比较直观，但对于大型项目来说，效率没有很高，很容易导致Xcode卡死。因此github中也存在一些可以实时检测内存并给出一定泄漏提醒的开源库。以下挑出几个比较突出的分别来看：</p>
 <h5 id="HeapInspector-for-iOS"><a href="#HeapInspector-for-iOS" class="headerlink" title="HeapInspector-for-iOS"></a>HeapInspector-for-iOS</h5><p><a href="https://github.com/tapwork/HeapInspector-for-iOS" target="_blank" rel="external">HeapInspector-for-iOS</a>可以说是Allocations的改进。通过hook掉<code>alloc</code>、<code>dealloc</code>、<code>retain</code>、<code>release</code>等方法来记录对象的生命周期。具体的检测内存泄漏的方法和原理，与Instruments的Allocations一致。存在的问题是，你需要一个个场景去重复的操作，还有检测不及时。</p>
 <p>具体来看：<br>其在AppDelegate中的<code>application:didFinishLaunchingWithOptions:</code>方法中进行出初始化，对NSObject的<code>alloc</code>、<code>dealloc</code>、<code>retain</code>、<code>release</code>方法进行hook，以指针地址为key对每次<code>alloc</code>、<code>dealloc</code>调用进行存储记录，基于每一次<code>retain</code>都对应一次<code>release</code>的原理来进行内存泄漏的检查。</p>
 <h5 id="MSLeakHunter"><a href="#MSLeakHunter" class="headerlink" title="MSLeakHunter"></a>MSLeakHunter</h5><p><a href="https://github.com/mindsnacks/MSLeakHunter" target="_blank" rel="external">MSLeakHunter</a>原理很简单，它只检测UIViewController和UIView，通过hook掉UIViewController的<code>-viewDidDisappear</code>方法，并认为<code>-viewDidDisappear</code>执行后，UIViewController会很快被释放，如果UIViewController没有被释放，则打个建议日志。这种做法比较简单粗暴，只适合小场景，毕竟<code>-viewDidDisappear</code>被调用可能是因为有push进来一个新的ViewController，把当前的ViewController挡住了，所以存在很多错误的建议日志，需要结合实际情况具体分析。</p>
