@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://cnsue.github.io/img/leak2.png">
 <meta property="og:image" content="https://cnsue.github.io/img/leak3.png">
 <meta property="og:image" content="https://cnsue.github.io/img/leak4.gif">
-<meta property="og:updated_time" content="2017-04-05T13:48:55.000Z">
+<meta property="og:updated_time" content="2017-04-11T13:53:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS内存泄漏自动检测盘点">
 <meta name="twitter:description" content="背景内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说">
@@ -318,6 +318,7 @@
 
       
         <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>内存泄漏一直是iOS开发中不可避免的问题， 快速准确的定位内存泄漏也是一个优秀的iOS开发工程师必备的素质。尽管Xcode提供了工具帮助我们更好的去查找内存泄漏,例如Instruments的Leaks/Allocations工具以及Xcode8提供的Debug Memory Graph等。但是在一般开发过程中，定位内存泄漏需要专门对项目进行profile等，如果项目比较大的话，运行起来相对来说比较缓慢，而且要进行定位的需要进行反复的测试点击。因此催生出了很多的第三方开源库来帮助我们实现在debug过程中实时提示内存泄漏，从而提高我们的开发效率，节省时间成本。当然，我们还是先来看一下这些Xcode提供的工具的使用以及相对应的问题。</p>
+<a id="more"></a>
 <h3 id="Leaks"><a href="#Leaks" class="headerlink" title="Leaks"></a>Leaks</h3><p>苹果的开发文档中介绍，一个app的内存分三类：</p>
 <ul>
 <li><p><strong>Leaked memory</strong>: Memory unreferenced by your application that cannot be used again or freed (also detectable by using the Leaks instrument).</p>
@@ -405,6 +406,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/04/11/身份证号码校验算法/" rel="prev" title="身份证号码校验算法">
+                身份证号码校验算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -430,7 +435,6 @@
   <div class="comments" id="comments">
     
   </div>
-
 
         </div>
         
@@ -475,7 +479,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -488,7 +492,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
