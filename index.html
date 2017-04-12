@@ -317,27 +317,17 @@
       
         
           
-            <h5 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h5><p>大陆18位身份证(第二代身份证)结构如下图所示：</p>
-<p>身份证号码是一组具有特征组合码，由十七位数字本体码</p>
-<p>排列顺序呢从左至右依次为：六位数字地区码、八位数字生日吗、三位数字顺序码和一位数字校验码。如图：</p>
-<p><a href="/img/verifyid0.png"></a></p>
+            <p>最近发现有很多人不了解身份证的构成，以为身份证是可以随便输的，现在来普及一下关于身份证校验的算法。</p>
+<p>大陆18位身份证(第二代身份证)结构如下图所示：<br><img src="/img/verifyid0.png" alt=""></p>
+<p>身份证号码是一组具有特征组合码，由十七位数字本体码。排列顺序呢从左至右依次为：六位数字地区码、八位数字生日吗、三位数字顺序码和一位数字校验码。</p>
 <p>18位身份证号码最后一位校验码的计算方法：</p>
-<p>校验方法：</p>
-<ol>
-<li>先对前17位数字的权求和</li>
-</ol>
+<p>1.先对前17位数字的权求和</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">S = Sum(Ci * Vi), i = <span class="number">0</span>, ... , <span class="number">16</span></div><div class="line"></div><div class="line">Ci:表示身份证号码上第i位置的数字值</div><div class="line"></div><div class="line">Vi:表示第i位置上的“加权因子”</div><div class="line">加权因子Vi: <span class="number">7</span> <span class="number">9</span> <span class="number">10</span> <span class="number">5</span> <span class="number">8</span> <span class="number">4</span> <span class="number">2</span> <span class="number">1</span> <span class="number">6</span> <span class="number">3</span> <span class="number">7</span> <span class="number">9</span> <span class="number">10</span> <span class="number">5</span> <span class="number">8</span> <span class="number">4</span> <span class="number">2</span></div></pre></td></tr></table></figure>
-<ol>
-<li>计算模（固定算法）</li>
-</ol>
+<p>2.计算模（固定算法）</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Y = mod(S, <span class="number">11</span>)</div></pre></td></tr></table></figure>
-<ol>
-<li>将计算出来的模Y与对应的校验码校验</li>
-</ol>
+<p>3.将计算出来的模Y与对应的校验码校验</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Y: <span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span></div><div class="line">(通过Y取得对应校验码与身份证的第<span class="number">18</span>位校验)</div><div class="line">校验码: <span class="number">1</span> <span class="number">0</span> X <span class="number">9</span> <span class="number">8</span> <span class="number">7</span> <span class="number">6</span> <span class="number">5</span> <span class="number">4</span> <span class="number">3</span> <span class="number">2</span></div></pre></td></tr></table></figure>
-<ol>
-<li>校验成功</li>
-</ol>
+<p>4.校验成功</p>
 
           
         
