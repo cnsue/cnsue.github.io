@@ -317,11 +317,142 @@
       
         
           
-            <h1 id="苹果提供的方法"><a href="#苹果提供的方法" class="headerlink" title="苹果提供的方法"></a>苹果提供的方法</h1><p>操作plist，添加Application uses Wi-Fi 该键值对，设置为YES，如果开飞行模式的话，进入页面会主动提示，如下图</p>
-<p>但该提示有时效性，如果用户点击好没有进行其他操作，那么再次进入页面时就不会提示，除非重启手机或者等待30分钟之后。(PS:debug真机调试时，次次提示)</p>
-<h1 id="自己找方法"><a href="#自己找方法" class="headerlink" title="自己找方法"></a>自己找方法</h1><p>苹果提供了CoreTelephony库，如下：</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;CoreTelephony/CTTelephonyNetworkInfo.h&gt;</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;CoreTelephony/CTCarrier.h&gt;</span></span></div><div class="line"></div><div class="line">-(<span class="keyword">void</span>)isAir</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span>([<span class="keyword">self</span> isSIMInstalled])</div><div class="line">    &#123;</div><div class="line">        <span class="built_in">CTTelephonyNetworkInfo</span> *networkInfo = [[<span class="built_in">CTTelephonyNetworkInfo</span> alloc]init];</div><div class="line">        <span class="keyword">if</span>(!networkInfo.currentRadioAccessTechnology)</div><div class="line">        &#123;</div><div class="line">            <span class="comment">//飞行模式</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">— (<span class="built_in">BOOL</span>)isSIMInstalled</div><div class="line">&#123;</div><div class="line">    <span class="built_in">CTTelephonyNetworkInfo</span> *networkInfo = [[<span class="built_in">CTTelephonyNetworkInfo</span> alloc] init];</div><div class="line">    <span class="built_in">CTCarrier</span> *carrier = [networkInfo subscriberCellularProvider];</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (!carrier.isoCountryCode) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"No sim present Or No cellular coverage or phone is on airplane mode."</span>);</div><div class="line">        <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+            <h1 id="苹果提供的方法"><a href="#苹果提供的方法" class="headerlink" title="苹果提供的方法"></a>苹果提供的方法</h1><p>操作plist，添加<figure class="highlight plain"><figcaption><span>uses Wi-Fi``` 该键值对，设置为YES，如果开飞行模式的话，进入页面会主动提示，如下图</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">但该提示有时效性，如果用户点击好没有进行其他操作，那么再次进入页面时就不会提示，除非重启手机或者等待30分钟之后。(PS:debug真机调试时，次次提示)</div><div class="line"></div><div class="line"># 自己找方法</div><div class="line">苹果提供了CoreTelephony库，如下：</div><div class="line"></div><div class="line">```objectivec</div><div class="line">#import &lt;CoreTelephony/CTTelephonyNetworkInfo.h&gt;</div><div class="line">#import &lt;CoreTelephony/CTCarrier.h&gt;</div><div class="line"></div><div class="line">-(void)isAir</div><div class="line">&#123;</div><div class="line">    if([self isSIMInstalled])</div><div class="line">    &#123;</div><div class="line">        CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc]init];</div><div class="line">        if(!networkInfo.currentRadioAccessTechnology)</div><div class="line">        &#123;</div><div class="line">            //飞行模式</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">— (BOOL)isSIMInstalled</div><div class="line">&#123;</div><div class="line">    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];</div><div class="line">    CTCarrier *carrier = [networkInfo subscriberCellularProvider];</div><div class="line">    </div><div class="line">    if (!carrier.isoCountryCode) &#123;</div><div class="line">        NSLog(@&quot;No sim present Or No cellular coverage or phone is on airplane mode.&quot;);</div><div class="line">        return NO;</div><div class="line">    &#125;</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>通过上述代码我们可以判断出是否开了飞行模式，之所以要判断是否安装了SIM卡，是因为如果没有插卡，currentRadioAccessTechnology始终返回nil，如果插卡后，除非开发飞行模式，否则currentRadioAccessTechnology始终有值。验证版本为iOS10.3</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://cnsue.github.io/2017/04/20/小试Python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cnsue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cnsue的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/20/小试Python/" itemprop="url">
+                  小试Python
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-20T20:56:58+08:00">
+                2017-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>写了一个小脚本，来批量对契约文件进行操作，以下为为实现功能涉及使用到的模块，并对模块进行延伸整理：</p>
+<h2 id="使用模块整理"><a href="#使用模块整理" class="headerlink" title="使用模块整理"></a>使用模块整理</h2><ol>
+<li>获取执行脚本时的命令行参数 <code>import sys</code> <code>sys</code>的argv参数用来获取输入的参数，数组形式，0 代表脚本本身； 1代表第一个参数…</li>
+<li><code>import os</code> <code>import os.path</code>用于进行文件操作，os模块包含普遍的操作系统功能，与具体的平台无关。以下为常用命令</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">os.name()<span class="comment">#--判断现在正在使用的平台，Windows返回'nt',Linux返回</span></div><div class="line">os.getcwd()<span class="comment">#--得到当前工作的目录  ps:get current work dir</span></div><div class="line">os.listdir()<span class="comment">#--得到指定目录下所有的文件和目录名,以列表的形式全部列举出来，其中没有区分目录和文件</span></div><div class="line">os.remove()<span class="comment">#--删除指定文件</span></div><div class="line">os.rmdir()<span class="comment">#--删除指定目录</span></div><div class="line">os.mkdir()<span class="comment">#--创建目录，ps：这个命令只能穿件一层目录，如果递归创建使用 os.makedirs()</span></div><div class="line">os.system()<span class="comment">#--执行shell命令，例如：os.system("echo 'hello world'").ps：此处执行命令如果要调用python之前的变量，可用如下方式：</span></div><div class="line">			var=<span class="number">123</span></div><div class="line">			os.environ[<span class="string">'var'</span>] = str(var)</div><div class="line">			os.system(<span class="string">'echo $var'</span>)</div><div class="line">os.chdir()<span class="comment">#--改变目录到指定目录</span></div><div class="line"></div><div class="line">os.path.isfile()<span class="comment">#--判断指定对象是否为文件，是返回true，否返回false</span></div><div class="line">os.path,isdir()<span class="comment">#--判断对象是否为目录，是true，否false</span></div><div class="line">os.path.split()<span class="comment">#--返回路径的目录和文件名，   类似把传入的路径 拆分  以最后一个/为分割点</span></div><div class="line">os.path.getsize()<span class="comment">#--获得文件的大小，如果为目录，返回0</span></div><div class="line">os.path.abspath()<span class="comment">#--获得绝对路径</span></div><div class="line">os.path.join(path,name)<span class="comment">#--连接目录和文件名</span></div><div class="line">os.path.basename(path)<span class="comment">#--返回文件名</span></div><div class="line">os.paht,dirname()<span class="comment">#--返回文件路径</span></div></pre></td></tr></table></figure>
+<ol>
+<li><p><code>import sys</code> This module provides access to some variables used or maintained by the interpreter and to functions that interact strongly with the interpreter.（该模块可供访问由解释器使用或维护的变量和与解释器进行交互的函数。）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sys.argv<span class="comment">#--实现从程序外部向程序传递参数</span></div><div class="line">sys.exit([arg])<span class="comment">#--程序中间的退出，arg=0为正常退出</span></div><div class="line">sys.getdefaultencoding()<span class="comment">#--获取系统当前编码</span></div><div class="line">sys.setdefaultencoding()<span class="comment">#--设置系统单签编码</span></div><div class="line">sys.getfilesystemencoding<span class="comment">#--获取文件系统编码方式，Windows下返回 mbcs ，mac下返回 utf-8</span></div><div class="line">sys.path<span class="comment">#--获取指定模块搜索路径的字符串集合，可以将写好的模块放在得到的某个路径下，就可以在import时正确找到</span></div><div class="line">sys.platform<span class="comment">#--获取当前系统平台</span></div><div class="line">sys.stdin,sys.stdout,sys.stderr<span class="comment">#--stdin,stdout以及stderr变量包含于标准I/O流对应的流对象，</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>re模块，python通过re模块提供对正则表达式的支持。使用re的一般步骤是先将正则表达式的字符串形式编译为Pattern实例，然后使用Pattern实例处理文本并获得匹配结果(一个Match实例)，最后使用Match实例获得信息，进行其他的操作。可参考这篇文章<a href="http://www.cnblogs.com/huxi/archive/2010/07/04/1771073.html" target="_blank" rel="external">Python正则表达式指南 - AstralWind - 博客园</a>，脚本使用了match的实例的sub方法进行文字的替换。</p>
+</li>
+</ol>
+<h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/python</div><div class="line"># -*- coding: UTF-8 -*-</div><div class="line"># 不加上面那句话，注释会报错</div><div class="line">import os</div><div class="line">import os.path</div><div class="line">import sys #获取命令行参数用的</div><div class="line">import re #该模块添加了正则表达式的支持</div><div class="line"></div><div class="line"></div><div class="line">#获取输入参数</div><div class="line">path = sys.argv[1]#0为脚本本身</div><div class="line"></div><div class="line">#查找参数对应文件夹下所有文件 返回文件名列表</div><div class="line">def findFileNames( path ):</div><div class="line">    filePaths = []</div><div class="line">    for parent,dirnames,filenames in os.walk(path):</div><div class="line">        for filename in filenames:</div><div class="line">            pattern = re.compile(r&quot;\S*\.([hm])&quot;)</div><div class="line">            filePath = os.path.join(parent,filename)</div><div class="line">            if pattern.match(filePath):</div><div class="line">                filePaths.append(filePath)</div><div class="line">                # print(&quot;filename is:&quot;,os.path.join(parent,filename))</div><div class="line">    return filePaths</div><div class="line"></div><div class="line">#查找正则匹配内容并输出</div><div class="line">def rplStr( filename ):</div><div class="line">    # print(filename)</div><div class="line">    fo = open(filename,&quot;r+&quot;)</div><div class="line">    content = fo.read()</div><div class="line">    pattern = re.compile(r&quot;-\(NSMutableArray \*\)getAnnotationArray&#123;([\s\S]*?)];([\s]*)&#125;([\s]*)&quot;)</div><div class="line">    finalcontent = pattern.sub(&quot;&quot;, content)</div><div class="line">    fo.close()</div><div class="line">    fo = open(filename,&quot;w+&quot;)</div><div class="line">    fo.write(finalcontent)</div><div class="line">    # matchContent = re.findall(r&quot;-\(NSMutableArray \*\)getAnnotationArray&#123;([\s\S]*?)&#125;\s&quot;, content)</div><div class="line">    # print(finalcontent)</div><div class="line">    fo.close()</div><div class="line"></div><div class="line"></div><div class="line">#获取所有文件</div><div class="line">filenames = findFileNames(path)</div><div class="line">#输出匹配内容</div><div class="line">for filename in filenames:</div><div class="line">    rplStr(filename)</div></pre></td></tr></table></figure>
 
           
         
@@ -1032,7 +1163,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
