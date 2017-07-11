@@ -240,6 +240,131 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://cnsue.github.io/2017/04/22/iOS-判断飞行模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cnsue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cnsue的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/22/iOS-判断飞行模式/" itemprop="url">
+                  iOS 判断飞行模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-22T21:29:08+08:00">
+                2017-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="苹果提供的方法"><a href="#苹果提供的方法" class="headerlink" title="苹果提供的方法"></a>苹果提供的方法</h1><p>操作plist，添加Application uses Wi-Fi 该键值对，设置为YES，如果开飞行模式的话，进入页面会主动提示，如下图</p>
+<p>但该提示有时效性，如果用户点击好没有进行其他操作，那么再次进入页面时就不会提示，除非重启手机或者等待30分钟之后。(PS:debug真机调试时，次次提示)</p>
+<h1 id="自己找方法"><a href="#自己找方法" class="headerlink" title="自己找方法"></a>自己找方法</h1><p>苹果提供了CoreTelephony库，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;CoreTelephony/CTTelephonyNetworkInfo.h&gt;</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;CoreTelephony/CTCarrier.h&gt;</span></span></div><div class="line"></div><div class="line">-(<span class="keyword">void</span>)isAir</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span>([<span class="keyword">self</span> isSIMInstalled])</div><div class="line">    &#123;</div><div class="line">        <span class="built_in">CTTelephonyNetworkInfo</span> *networkInfo = [[<span class="built_in">CTTelephonyNetworkInfo</span> alloc]init];</div><div class="line">        <span class="keyword">if</span>(!networkInfo.currentRadioAccessTechnology)</div><div class="line">        &#123;</div><div class="line">            <span class="comment">//飞行模式</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">— (<span class="built_in">BOOL</span>)isSIMInstalled</div><div class="line">&#123;</div><div class="line">    <span class="built_in">CTTelephonyNetworkInfo</span> *networkInfo = [[<span class="built_in">CTTelephonyNetworkInfo</span> alloc] init];</div><div class="line">    <span class="built_in">CTCarrier</span> *carrier = [networkInfo subscriberCellularProvider];</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (!carrier.isoCountryCode) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"No sim present Or No cellular coverage or phone is on airplane mode."</span>);</div><div class="line">        <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过上述代码我们可以判断出是否开了飞行模式，之所以要判断是否安装了SIM卡，是因为如果没有插卡，currentRadioAccessTechnology始终返回nil，如果插卡后，除非开发飞行模式，否则currentRadioAccessTechnology始终有值。验证版本为iOS10.3</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://cnsue.github.io/2017/04/17/密码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -907,7 +1032,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
