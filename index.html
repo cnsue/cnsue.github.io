@@ -339,7 +339,15 @@ void test()
 }
 </code></pre><p>输出结果如下：</p>
 <pre><code>d=80, strongStr=456, blockStr=123, weakStr=789
-</code></pre>
+</code></pre><p>上面的代码片段中，我们分别定义了：</p>
+<ul>
+<li>不带修饰符的基本类型变量a</li>
+<li>带__block修饰符的block变量b和blockStr</li>
+<li>默认带__strong修饰符的变量strongStr</li>
+<li>带__weak修饰符的变量weakStr<br>这些修饰符关键字的使用会对block块内的diamante在运行时产生不同的影响。就上面的代码片段而言，当我们在编译时，编译器到底做了什么处理？如果能够了解到编译器的编译过程，那么对我们掌握其实现机制就非常有帮助。我们可以借助命令来看到中间过程，如下：</li>
+</ul>
+<p><code>clang -rewrite-objc -fobjc-arc -stdlib=libc++ -mmacosx-version-min=10.7 -fobjc-runtime=macosx-10.7 -Wno-deprecated-declarations test.m</code></p>
+
           
         
       

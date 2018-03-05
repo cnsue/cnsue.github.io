@@ -93,7 +93,7 @@
 <meta property="og:url" content="https://cnsue.github.io/2017/05/02/OC-block实现原理/index.html">
 <meta property="og:site_name" content="Cnsue的博客">
 <meta property="og:description" content="blockiOS中经常出现的一个知识点就是block，也就是闭包。block最早出现在iOS4中，并在后续的版本中大量的推广和使用了这项技术,如视图动画API的改版，GCD技术等。block本质上就是闭包功能在iOS上的实现而已。而闭包功能在其他很多语言中都有实现。用闭包可以解决执行逻辑和上下文韩静解耦的场景，如果从设计模式的角度来考虑的话，闭包就是一种策略模式的实现本文主要是探讨OC的block">
-<meta property="og:updated_time" content="2018-03-05T13:24:36.708Z">
+<meta property="og:updated_time" content="2018-03-05T13:38:44.643Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OC block实现原理">
 <meta name="twitter:description" content="blockiOS中经常出现的一个知识点就是block，也就是闭包。block最早出现在iOS4中，并在后续的版本中大量的推广和使用了这项技术,如视图动画API的改版，GCD技术等。block本质上就是闭包功能在iOS上的实现而已。而闭包功能在其他很多语言中都有实现。用闭包可以解决执行逻辑和上下文韩静解耦的场景，如果从设计模式的角度来考虑的话，闭包就是一种策略模式的实现本文主要是探讨OC的block">
@@ -343,7 +343,15 @@ void test()
 }
 </code></pre><p>输出结果如下：</p>
 <pre><code>d=80, strongStr=456, blockStr=123, weakStr=789
-</code></pre>
+</code></pre><p>上面的代码片段中，我们分别定义了：</p>
+<ul>
+<li>不带修饰符的基本类型变量a</li>
+<li>带__block修饰符的block变量b和blockStr</li>
+<li>默认带__strong修饰符的变量strongStr</li>
+<li>带__weak修饰符的变量weakStr<br>这些修饰符关键字的使用会对block块内的diamante在运行时产生不同的影响。就上面的代码片段而言，当我们在编译时，编译器到底做了什么处理？如果能够了解到编译器的编译过程，那么对我们掌握其实现机制就非常有帮助。我们可以借助命令来看到中间过程，如下：</li>
+</ul>
+<p><code>clang -rewrite-objc -fobjc-arc -stdlib=libc++ -mmacosx-version-min=10.7 -fobjc-runtime=macosx-10.7 -Wno-deprecated-declarations test.m</code></p>
+
       
     </div>
 
