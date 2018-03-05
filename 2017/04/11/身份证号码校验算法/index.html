@@ -104,7 +104,7 @@
 1.先对前17位数字的权求和
 123456S = Sum(Ci">
 <meta property="og:image" content="https://cnsue.github.io/img/verifyid0.png">
-<meta property="og:updated_time" content="2017-04-13T14:00:28.000Z">
+<meta property="og:updated_time" content="2018-03-05T14:13:00.150Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="身份证号码校验算法">
 <meta name="twitter:description" content="最近发现有很多人不了解身份证的构成，以为身份证是可以随便输的，现在来普及一下关于身份证校验的算法。
@@ -344,6 +344,7 @@
 <p>18位身份证号码最后一位校验码的计算方法：</p>
 <p>1.先对前17位数字的权求和</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">S = Sum(Ci * Vi), i = <span class="number">0</span>, ... , <span class="number">16</span></div><div class="line"></div><div class="line">Ci:表示身份证号码上第i位置的数字值</div><div class="line"></div><div class="line">Vi:表示第i位置上的“加权因子”</div><div class="line">加权因子Vi: <span class="number">7</span> <span class="number">9</span> <span class="number">10</span> <span class="number">5</span> <span class="number">8</span> <span class="number">4</span> <span class="number">2</span> <span class="number">1</span> <span class="number">6</span> <span class="number">3</span> <span class="number">7</span> <span class="number">9</span> <span class="number">10</span> <span class="number">5</span> <span class="number">8</span> <span class="number">4</span> <span class="number">2</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>2.计算模（固定算法）</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Y = mod(S, <span class="number">11</span>)</div></pre></td></tr></table></figure>
 <p>3.将计算出来的模Y与对应的校验码校验</p>
