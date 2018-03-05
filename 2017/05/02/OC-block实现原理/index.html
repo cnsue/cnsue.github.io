@@ -87,16 +87,16 @@
 
 
 
-<meta name="description" content="Coding 改变生活">
+<meta name="description" content="blockiOS中经常出现的一个知识点就是block，也就是闭包。block最早出现在iOS4中，并在后续的版本中大量的推广和使用了这项技术,如视图动画API的改版，GCD技术等。block本质上就是闭包功能在iOS上的实现而已。而闭包功能在其他很多语言中都有实现。用闭包可以解决执行逻辑和上下文韩静解耦的场景，如果从设计模式的角度来考虑的话，闭包就是一种策略模式的实现">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OC block实现原理">
 <meta property="og:url" content="https://cnsue.github.io/2017/05/02/OC-block实现原理/index.html">
 <meta property="og:site_name" content="Cnsue的博客">
-<meta property="og:description" content="Coding 改变生活">
-<meta property="og:updated_time" content="2018-03-05T13:03:54.130Z">
+<meta property="og:description" content="blockiOS中经常出现的一个知识点就是block，也就是闭包。block最早出现在iOS4中，并在后续的版本中大量的推广和使用了这项技术,如视图动画API的改版，GCD技术等。block本质上就是闭包功能在iOS上的实现而已。而闭包功能在其他很多语言中都有实现。用闭包可以解决执行逻辑和上下文韩静解耦的场景，如果从设计模式的角度来考虑的话，闭包就是一种策略模式的实现">
+<meta property="og:updated_time" content="2018-03-05T13:12:38.955Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OC block实现原理">
-<meta name="twitter:description" content="Coding 改变生活">
+<meta name="twitter:description" content="blockiOS中经常出现的一个知识点就是block，也就是闭包。block最早出现在iOS4中，并在后续的版本中大量的推广和使用了这项技术,如视图动画API的改版，GCD技术等。block本质上就是闭包功能在iOS上的实现而已。而闭包功能在其他很多语言中都有实现。用闭包可以解决执行逻辑和上下文韩静解耦的场景，如果从设计模式的角度来考虑的话，闭包就是一种策略模式的实现">
 
 
 
@@ -321,7 +321,8 @@
       
 
       
-        
+        <h3 id="block"><a href="#block" class="headerlink" title="block"></a>block</h3><p>iOS中经常出现的一个知识点就是block，也就是闭包。block最早出现在iOS4中，并在后续的版本中大量的推广和使用了这项技术,如视图动画API的改版，GCD技术等。block本质上就是闭包功能在iOS上的实现而已。而闭包功能在其他很多语言中都有实现。用闭包可以解决执行逻辑和上下文韩静解耦的场景，如果从设计模式的角度来考虑的话，闭包就是一种<code>策略模式</code>的实现</p>
+
       
     </div>
 
@@ -419,8 +420,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -473,6 +483,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#block"><span class="nav-number">1.</span> <span class="nav-text">block</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
